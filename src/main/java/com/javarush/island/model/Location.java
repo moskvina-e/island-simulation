@@ -1,17 +1,20 @@
 package com.javarush.island.model;
 
 import com.javarush.island.animal.Animal;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 /**
 * Класс Локация содержит списки животных и растений
-* Метод removePlant удаляет последнее растение (без синхронизации в еврсии 1.0)
+* Метод removePlant удаляет последнее растение (без синхронизации в версии 1.0)
 */
 public class Location {
 
+    @Getter
     private final List<Animal> animals = new ArrayList<Animal>();
 
+    @Getter
     private final List<Plant> plants = new ArrayList<>();
 
     public void addAnimal(Animal animal) {
@@ -27,7 +30,7 @@ public class Location {
     }
 
     //Для однопоточной версии простое удаление растения
-    public List<Plant> removePlant() {
+    public Plant removePlant() {
         if(!plants.isEmpty()) {
             return plants.remove(plants.size() - 1);
         }
