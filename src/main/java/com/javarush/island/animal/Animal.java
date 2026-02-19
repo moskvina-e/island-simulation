@@ -2,9 +2,14 @@ package com.javarush.island.animal;
 
 import com.javarush.island.model.Island;
 import com.javarush.island.model.Location;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
-
+@Data
+@NoArgsConstructor
+@Slf4j
 public abstract class Animal {
     protected double weight;
     protected double maxSatiety; // Максимальная сытость
@@ -15,10 +20,10 @@ public abstract class Animal {
     // Карта вероятности поедания других животных
     protected Map<Class<? extends Animal>, Integer> eatingProbabilities;
 
-    public Animal(double weight, double maxSatiety, double currentSatiety) {
+    public Animal(double weight, double maxSatiety) {
         this.weight = weight;
         this.maxSatiety = maxSatiety;
-        this.currentSatiety = currentSatiety;
+        this.currentSatiety = maxSatiety;
     }
 
     // eat, move, reproduce
