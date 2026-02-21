@@ -29,7 +29,7 @@ public abstract class Omnivorous extends Animal {
 
     public boolean tryEatAsPredator(Location location) {
         for (Animal prey : location.getAnimals()) {
-            if (prey == this || !prey.isAlive())
+            if (prey == this || !prey.isAlive() || prey.getClass() == this.getClass())
                 continue;
             Integer prob = eatingProbabilities.get(prey.getClass());
             if (prob != null && ThreadLocalRandom.current().nextInt(100) < prob) {
