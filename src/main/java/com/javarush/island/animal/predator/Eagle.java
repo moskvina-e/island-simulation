@@ -5,6 +5,10 @@ package com.javarush.island.animal.predator;
  */
 
 import com.javarush.island.animal.Animal;
+import com.javarush.island.animal.herbivore.Caterpillar;
+import com.javarush.island.animal.herbivore.Rabbit;
+import com.javarush.island.animal.omnivorous.Duck;
+import com.javarush.island.animal.omnivorous.Mouse;
 import com.javarush.island.model.Island;
 import com.javarush.island.model.Location;
 
@@ -14,7 +18,8 @@ public class Eagle extends Predator {
 
     private static final double WEIGHT = 6;
     private static final double MAX_SATIETY = 1;
-    private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(); //todo добавить сущности, кого ест волк
+    private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(
+            Fox.class, 10, Rabbit.class, 90, Mouse.class, 90, Duck.class, 80);
 
 
     public Eagle() {

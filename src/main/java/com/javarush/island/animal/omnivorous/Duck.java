@@ -5,6 +5,7 @@ package com.javarush.island.animal.omnivorous;
  */
 
 import com.javarush.island.animal.Animal;
+import com.javarush.island.animal.herbivore.Caterpillar;
 import com.javarush.island.model.Island;
 import com.javarush.island.model.Location;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 public class Duck extends Omnivorous{
     private static final double WEIGHT = 1;
     private static final double MAX_SATIETY = 0.15;
-    private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(); //todo добавить сущности, кого ест волк
+    private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(Caterpillar.class, 90);
 
 
     public Duck() {
