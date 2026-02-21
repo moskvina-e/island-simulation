@@ -1,10 +1,14 @@
-package com.javarush.island.animal;
+package com.javarush.island.animal.herbivore;
 
+import com.javarush.island.animal.Animal;
 import com.javarush.island.model.Island;
 import com.javarush.island.model.Location;
 import com.javarush.island.model.Plant;
 import lombok.extern.slf4j.Slf4j;
 
+/*
+ * Rabbit травоядное
+ */
 @Slf4j
 public class Rabbit extends Animal {
 
@@ -17,7 +21,7 @@ public class Rabbit extends Animal {
 
     @Override
     public void eat(Location location) {
-        if(!alive)
+        if(!this.isAlive())
             return;
         Plant plant = location.removePlant();
         if (plant != null) {
