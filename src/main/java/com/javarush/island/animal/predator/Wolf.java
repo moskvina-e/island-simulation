@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /*
  * Wolf хищник
  */
-@Slf4j
+
 public class Wolf extends Predator {
 
     private static final double WEIGHT = 50;
