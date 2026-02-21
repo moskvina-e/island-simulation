@@ -19,7 +19,7 @@ com.javarush.island
      - Sheep - овца
      - Buffalo - буйвол
      - Caterpillar - гусеница
-   - Omnivorous - всеядные (могут есть каких-то животных и растения)
+   - Omnivorous - всеядное (могут есть каких-то животных и растения)
      - Boar - кабан
      - Mouse - мышь
      - Duck - утка
