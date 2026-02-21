@@ -3,10 +3,8 @@ package com.javarush.island.animal.predator;
 import com.javarush.island.animal.Animal;
 import com.javarush.island.model.Island;
 import com.javarush.island.model.Location;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 /*
  * Wolf хищник
