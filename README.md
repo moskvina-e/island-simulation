@@ -15,13 +15,14 @@ com.javarush.island
      - Horse - лошадь
      - Deer - олень
      - Rabbit - кролик
-     - Mouse - мышь
      - Goat - коза
      - Sheep - овца
-     - Boar - кабан
      - Buffalo - буйвол
-     - Duck - утка
      - Caterpillar - гусеница
+   - Omnivorous
+     - Boar - кабан
+     - Mouse - мышь
+     - Duck - утка
 2) config - конфигурация всего приложения
  - SimulationConfig - конфигруация для однопоточного и многопоточного приложений
 3) model - модельные классы
