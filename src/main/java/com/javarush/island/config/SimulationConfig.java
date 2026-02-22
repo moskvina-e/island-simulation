@@ -19,7 +19,7 @@ public class SimulationConfig {
     private int initialWolves;
 
     //Популяции травоядных
-    private int initialBuffalos;
+    private int initialBuffaloes;
     private int initialCaterpillars;
     private int initialDeer;
     private int initialGoats;
