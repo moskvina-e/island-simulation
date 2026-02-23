@@ -22,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SimpleSimulation {
     private final Island island;
     private final SimulationConfig config;
-
+    private final double SATIETY_PER_TICK = 0.01;
     public SimpleSimulation(SimulationConfig config) {
         this.config = config;
         this.island = new Island(config.getIslandHeight(), config.getIslandWidth());
@@ -76,7 +76,7 @@ public class SimpleSimulation {
                     animal.move(island, x, y);
                     animal.reproduce(location);
                     // Уменьшаем сытость
-                    animal.setCurrentSatiety(animal.getCurrentSatiety() - 1); //todo заменить магическое число
+                    animal.setCurrentSatiety(animal.getCurrentSatiety() - SATIETY_PER_TICK);
                     if (animal.getCurrentSatiety() <= 0) {
                         animal.die();
                         location.removeAnimal(animal);
@@ -120,32 +120,5 @@ public class SimpleSimulation {
             tick();
             Thread.sleep(1000);// todo заменить магическое число
         }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        SimulationConfig config = SimulationConfig.builder()
-                .islandHeight(5)
-                .islandWidth(5)
-                .initialAnimals(Map.ofEntries(
-                        Map.entry(Buffalo.class, 5),
-                        Map.entry(Caterpillar.class, 5),
-                        Map.entry(Goat.class, 5),
-                        Map.entry(Horse.class, 5),
-                        Map.entry(Sheep.class, 5),
-                        Map.entry(Boar.class, 5),
-                        Map.entry(Duck.class, 5),
-                        Map.entry(Mouse.class, 5),
-                        Map.entry(Bear.class, 5),
-                        Map.entry(Boa.class, 5),
-                        Map.entry(Eagle.class, 5),
-                        Map.entry(Fox.class, 5),
-                        Map.entry(Wolf.class, 5),
-                        Map.entry(Rabbit.class, 5),
-                        Map.entry(Deer.class, 5)))
-                .plantsPerSell(5)
-                .build();
-        SimpleSimulation simpleSimulation = new SimpleSimulation(config);
-        simpleSimulation.initialize();
-        simpleSimulation.run(10);
     }
 }
