@@ -74,7 +74,6 @@ public class SimpleSimulation {
                 }
             }
         }
-
         // 2) Обработка животных (пройти по всем клеткам)
         for (int y = 0; y < island.getHeight(); y++) {
             for (int x = 0; x < island.getWidth(); x++) {
@@ -127,19 +126,19 @@ public class SimpleSimulation {
 
     public void run(int tiks) throws InterruptedException {
         for (int i = 0; i < tiks; i++) {
-            log.info("Такт {}", i+1);
+            log.info("Такт {}", i + 1);
+            tick();
+            Thread.sleep(1000);// todo заменить магическое число
         }
-        tick();
-        Thread.sleep(1000); // todo заменить магическое число
     }
 
     public static void main(String[] args) throws InterruptedException {
         SimulationConfig config = SimulationConfig.builder()
-                .islandHeight(5)
-                .islandWidth(5)
+                .islandHeight(2)
+                .islandWidth(2)
                 .initialWolves(5)
                 .initialDeer(5)
-                .initialRabbits(5)
+                .initialRabbits(15)
                 .plantsPerSell(5)
                 .build();
         SimpleSimulation simpleSimulation = new SimpleSimulation(config);
