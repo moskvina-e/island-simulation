@@ -1,7 +1,9 @@
 package com.javarush.island.config;
 
+import com.javarush.island.animal.Animal;
 import lombok.Builder;
 import lombok.Data;
+import java.util.Map;
 
 @Data
 @Builder
@@ -11,26 +13,8 @@ public class SimulationConfig {
     private int islandWidth;
     private int islandHeight;
 
-    //Популяции хищников
-    private int initialBears;
-    private int initialBoa;
-    private int initialEagles;
-    private int initialFoxes;
-    private int initialWolves;
-
-    //Популяции травоядных
-    private int initialBuffaloes;
-    private int initialCaterpillars;
-    private int initialDeer;
-    private int initialGoats;
-    private int initialHorses;
-    private int initialRabbits;
-    private int initialSheep;
-
-    //Популяции всеядных
-    private int initialBoars;
-    private int initialDucks;
-    private int initialMice;
+    //Популяции животных
+    private Map<Class<? extends Animal>, Integer> initialAnimals;
 
     //Кол-во растений, которые будут добавляться за 1 такт в каждую клетку
     private int plantsPerSell;

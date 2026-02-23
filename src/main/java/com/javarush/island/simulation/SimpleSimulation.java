@@ -1,9 +1,9 @@
 package com.javarush.island.simulation;
 
 import com.javarush.island.animal.Animal;
-import com.javarush.island.animal.herbivore.Deer;
-import com.javarush.island.animal.herbivore.Rabbit;
-import com.javarush.island.animal.predator.Wolf;
+import com.javarush.island.animal.herbivore.*;
+import com.javarush.island.animal.omnivorous.*;
+import com.javarush.island.animal.predator.*;
 import com.javarush.island.config.SimulationConfig;
 import com.javarush.island.model.Island;
 import com.javarush.island.model.Location;
@@ -11,6 +11,7 @@ import com.javarush.island.model.Plant;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -27,36 +28,25 @@ public class SimpleSimulation {
         this.island = new Island(config.getIslandHeight(), config.getIslandWidth());
     }
 
-    public void initialize() { //todo прописать метод для всех животных(через дженерик ? extends Animal?)
-        //Размещение Волков
-        for (int i = 0; i < config.getInitialWolves(); i++) {
-            int x = ThreadLocalRandom.current().nextInt(config.getIslandWidth());
-            int y = ThreadLocalRandom.current().nextInt(config.getIslandHeight());
-            Wolf wolf = new Wolf();
-            island.getLocation(x, y).addAnimal(wolf);
+    public void initialize() {
+        //Размещение всех животных по клеткам
+        for (Map.Entry<Class<? extends Animal>, Integer> entry : config.getInitialAnimals().entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                int x = ThreadLocalRandom.current().nextInt(config.getIslandWidth());
+                int y = ThreadLocalRandom.current().nextInt(config.getIslandHeight());
+                try {
+                    island.getLocation(x, y).addAnimal(entry.getKey().getConstructor().newInstance());
+                } catch (Exception e) {
+                    log.error("Не могу создать {}", entry.getKey().getSimpleName(), e);
+                    continue;
+                }
+            }
         }
-
-        //Размещение Кроликов
-        for (int i = 0; i < config.getInitialRabbits(); i++) {
-            int x = ThreadLocalRandom.current().nextInt(config.getIslandWidth());
-            int y = ThreadLocalRandom.current().nextInt(config.getIslandHeight());
-            Rabbit rabbit = new Rabbit();
-            island.getLocation(x, y).addAnimal(rabbit);
-        }
-
-        //Размещение Оленей
-        for (int i = 0; i < config.getInitialDeer(); i++) {
-            int x = ThreadLocalRandom.current().nextInt(config.getIslandWidth());
-            int y = ThreadLocalRandom.current().nextInt(config.getIslandHeight());
-            Deer deer = new Deer();
-            island.getLocation(x, y).addAnimal(deer);
-        }
-        
         //Размещаем растения
         for (int y = 0; y < island.getHeight(); y++) {
             for (int x = 0; x < island.getWidth(); x++) {
                 Location location = island.getLocation(x, y);
-                for (int p = 0; p < 5; p++) { //todo заменить магическое число в конфиг
+                for (int p = 0; p < 5; p++) {  //todo заменить магическое число
                     location.addPlant(new Plant());
                 }
             }
@@ -98,7 +88,7 @@ public class SimpleSimulation {
     }
 
     public void printStatistics() {
-        //todo вывести статистику
+        //todo статистку по всем животным
         int wolves = 0;
         int rabbits = 0;
         int deer = 0;
@@ -134,11 +124,24 @@ public class SimpleSimulation {
 
     public static void main(String[] args) throws InterruptedException {
         SimulationConfig config = SimulationConfig.builder()
-                .islandHeight(2)
-                .islandWidth(2)
-                .initialWolves(5)
-                .initialDeer(5)
-                .initialRabbits(15)
+                .islandHeight(5)
+                .islandWidth(5)
+                .initialAnimals(Map.ofEntries(
+                        Map.entry(Buffalo.class, 5),
+                        Map.entry(Caterpillar.class, 5),
+                        Map.entry(Goat.class, 5),
+                        Map.entry(Horse.class, 5),
+                        Map.entry(Sheep.class, 5),
+                        Map.entry(Boar.class, 5),
+                        Map.entry(Duck.class, 5),
+                        Map.entry(Mouse.class, 5),
+                        Map.entry(Bear.class, 5),
+                        Map.entry(Boa.class, 5),
+                        Map.entry(Eagle.class, 5),
+                        Map.entry(Fox.class, 5),
+                        Map.entry(Wolf.class, 5),
+                        Map.entry(Rabbit.class, 5),
+                        Map.entry(Deer.class, 5)))
                 .plantsPerSell(5)
                 .build();
         SimpleSimulation simpleSimulation = new SimpleSimulation(config);
