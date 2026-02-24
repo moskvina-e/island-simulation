@@ -21,6 +21,4 @@ public class SimulationConfig {
 
     //Дюрация в мс
     private long tickDurationMs;
-
-    //Вероятности
 }

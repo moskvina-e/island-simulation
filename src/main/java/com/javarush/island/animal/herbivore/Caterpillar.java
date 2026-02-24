@@ -10,7 +10,7 @@ import com.javarush.island.model.Location;
 public class Caterpillar extends Herbivore {
 
     private static final double WEIGHT = 0.01;
-    private static final double MAX_SATIETY = 0;
+    private static final double MAX_SATIETY = 0.001; //задаю макс. сытость гусеницы как десятую часть ее веса по аналогии с др. животными
 
     public Caterpillar() {
         super(WEIGHT, MAX_SATIETY);
