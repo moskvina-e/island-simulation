@@ -15,10 +15,11 @@ public class Mouse extends Omnivorous {
     private static final double WEIGHT = 0.05;
     private static final double MAX_SATIETY = 0.01;
     private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(Caterpillar.class, 90);
+    private static final int SPEED = 1;
 
 
     public Mouse() {
-        super(WEIGHT, MAX_SATIETY, EATING_PROBABILITIES);
+        super(WEIGHT, MAX_SATIETY, EATING_PROBABILITIES, SPEED);
     }
 
     @Override

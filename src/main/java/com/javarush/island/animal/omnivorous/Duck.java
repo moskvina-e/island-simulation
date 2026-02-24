@@ -15,10 +15,11 @@ public class Duck extends Omnivorous{
     private static final double WEIGHT = 1;
     private static final double MAX_SATIETY = 0.15;
     private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(Caterpillar.class, 90);
+    private static final int SPEED = 4;
 
 
     public Duck() {
-        super(WEIGHT, MAX_SATIETY, EATING_PROBABILITIES);
+        super(WEIGHT, MAX_SATIETY, EATING_PROBABILITIES, SPEED);
     }
 
     @Override

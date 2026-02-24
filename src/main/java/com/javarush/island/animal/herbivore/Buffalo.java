@@ -11,9 +11,10 @@ public class Buffalo extends Herbivore {
 
     private static final double WEIGHT = 700;
     private static final double MAX_SATIETY = 100;
+    private static final int SPEED = 3;
 
     public Buffalo() {
-        super(WEIGHT, MAX_SATIETY);
+        super(WEIGHT, MAX_SATIETY, SPEED);
     }
 
     @Override

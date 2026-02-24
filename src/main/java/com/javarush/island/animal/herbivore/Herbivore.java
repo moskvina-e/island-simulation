@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class Herbivore extends Animal {
 
-    public Herbivore(double weight, double maxSatiety) {
-        super(weight, maxSatiety);
+    public Herbivore(double weight, double maxSatiety, int speed) {
+        super(weight, maxSatiety, speed);
     }
 
     public void eat(Location location) {

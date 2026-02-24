@@ -10,9 +10,10 @@ import com.javarush.island.model.Location;
 public class Horse extends Herbivore {
     private static final double WEIGHT = 400;
     private static final double MAX_SATIETY = 60;
+    private static final int SPEED = 4;
 
     public Horse() {
-        super(WEIGHT, MAX_SATIETY);
+        super(WEIGHT, MAX_SATIETY, SPEED);
     }
 
     @Override

@@ -20,10 +20,11 @@ public class Eagle extends Predator {
     private static final double MAX_SATIETY = 1;
     private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(
             Fox.class, 10, Rabbit.class, 90, Mouse.class, 90, Duck.class, 80);
+    private static final int SPEED = 3;
 
 
     public Eagle() {
-        super(WEIGHT, MAX_SATIETY, EATING_PROBABILITIES);
+        super(WEIGHT, MAX_SATIETY, EATING_PROBABILITIES,  SPEED);
     }
 
     @Override

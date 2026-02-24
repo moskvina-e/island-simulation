@@ -21,10 +21,11 @@ public class Bear extends Predator {
     private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(
             Boa.class, 80,Horse.class, 40, Deer.class, 80, Rabbit.class, 80, Mouse.class, 90,
             Goat.class, 70, Sheep.class, 70, Boar.class, 50, Buffalo.class, 20, Duck.class, 10);
+    private static final int SPEED = 2;
 
 
     public Bear() {
-        super(WEIGHT, MAX_SATIETY, EATING_PROBABILITIES);
+        super(WEIGHT, MAX_SATIETY, EATING_PROBABILITIES, SPEED);
     }
 
     @Override
