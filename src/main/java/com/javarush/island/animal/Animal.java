@@ -19,17 +19,19 @@ public abstract class Animal {
     protected boolean alive = true; // Животное живое
     protected boolean isMale; // Пол животного, true - муж., false - жен.
     protected int speed; // Скорость перемещения
+    protected int maxNumberOfAnimalsPerCell; // Максимальное кол-во животных одного вида на одной клетке
     protected volatile Location currentLocation; // Текущее положение животного
 
     // Карта вероятности поедания других животных
     protected Map<Class<? extends Animal>, Integer> eatingProbabilities;
 
-    public Animal(double weight, double maxSatiety, int speed) {
+    public Animal(double weight, double maxSatiety, int speed, int maxNumberOfAnimalsPerCell) {
         this.weight = weight;
         this.maxSatiety = maxSatiety;
         this.currentSatiety = maxSatiety;
         this.isMale = ThreadLocalRandom.current().nextBoolean();
         this.speed = speed;
+        this.maxNumberOfAnimalsPerCell = maxNumberOfAnimalsPerCell;
     }
 
     // eat, move, reproduce

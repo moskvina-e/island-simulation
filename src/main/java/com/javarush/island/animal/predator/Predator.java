@@ -10,8 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
 @Slf4j
 public abstract class Predator extends Animal {
 
-    public Predator(double weight, double maxSatiety, Map<Class<? extends Animal>, Integer> eatingProbabilities, int speed) {
-        super(weight, maxSatiety, speed);
+    public Predator(double weight, double maxSatiety, Map<Class<? extends Animal>, Integer> eatingProbabilities, int speed, int maxNumberOfAnimalsPerCell) {
+        super(weight, maxSatiety, speed, maxNumberOfAnimalsPerCell);
         this.eatingProbabilities = eatingProbabilities;
     }
 
