@@ -42,7 +42,7 @@ public abstract class Animal {
     public void move(Island island, int currentX, int currentY) {
         if (!isAlive())
             return;
-        if (currentLocation == null) { //todo где-то инициализируется это поле currentLocation?
+        if (currentLocation == null) {
             log.warn("Животное {} не имеет текущей локации. Передвижение не возможно!", this.getClass().getSimpleName());
             return;
         }
