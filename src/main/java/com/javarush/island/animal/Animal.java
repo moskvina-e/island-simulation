@@ -22,6 +22,7 @@ public abstract class Animal {
     protected int speed; // Скорость перемещения
     protected int maxNumberOfAnimalsPerCell; // Максимальное кол-во животных одного вида на одной клетке
     protected volatile Location currentLocation; // Текущее положение животного
+    private static final int CHANCE_OF_REPRODUCTION = 50; // Шанс размножения
 
     // Карта вероятности поедания других животных
     protected Map<Class<? extends Animal>, Integer> eatingProbabilities;
@@ -88,8 +89,9 @@ public abstract class Animal {
                         && animal.isAlive()
                         && animal.getCurrentSatiety() >= 0.5 * animal.getMaxSatiety())
                 .count();
-        if (sameSpeciesCount > 0  && ThreadLocalRandom.current().nextInt(100) >= 50 && checkAnimalsOnLocation(location)) {
+        if (sameSpeciesCount > 0  && ThreadLocalRandom.current().nextInt(100) >= CHANCE_OF_REPRODUCTION && checkAnimalsOnLocation(location)) {
             try {
+                // Создание потомка через рефлексию (не требуется знание о конкретном классе животного во время компиляции)
                 Animal baby = this.getClass().getDeclaredConstructor().newInstance();
                 baby.setCurrentSatiety(baby.getMaxSatiety() / 2);
                 location.addAnimal(baby);
