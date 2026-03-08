@@ -17,7 +17,7 @@ public class Boar extends Omnivorous{
     private static final double MAX_SATIETY = 50;
     private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(Mouse.class, 50, Caterpillar.class, 90);
     private static final int SPEED = 2;
-    private static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 50;
+    public static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 50;
 
 
     public Boar() {

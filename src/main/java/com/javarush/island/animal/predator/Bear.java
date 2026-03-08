@@ -22,7 +22,7 @@ public class Bear extends Predator {
             Boa.class, 80,Horse.class, 40, Deer.class, 80, Rabbit.class, 80, Mouse.class, 90,
             Goat.class, 70, Sheep.class, 70, Boar.class, 50, Buffalo.class, 20, Duck.class, 10);
     private static final int SPEED = 2;
-    private static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 5;
+    public static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 5;
 
 
     public Bear() {

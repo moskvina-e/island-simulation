@@ -22,7 +22,7 @@ public class Wolf extends Predator {
             Horse.class, 10, Deer.class, 15, Rabbit.class, 60, Mouse.class, 80,
             Goat.class, 60, Sheep.class, 70, Boar.class, 15, Buffalo.class, 10, Duck.class, 40);
     private static final int SPEED = 3;
-    private static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 30;
+    public static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 30;
 
 
     public Wolf() {

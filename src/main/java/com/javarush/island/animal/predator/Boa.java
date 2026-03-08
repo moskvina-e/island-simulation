@@ -19,7 +19,7 @@ public class Boa extends Predator {
     private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(
             Fox.class, 15, Rabbit.class, 20, Mouse.class, 40, Duck.class, 10);
     private static final int SPEED = 1;
-    private static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 30;
+    public static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 30;
 
 
     public Boa() {

@@ -16,7 +16,7 @@ public class Duck extends Omnivorous{
     private static final double MAX_SATIETY = 0.15;
     private static final Map<Class<? extends Animal>, Integer> EATING_PROBABILITIES = Map.of(Caterpillar.class, 90);
     private static final int SPEED = 4;
-    private static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 200;
+    public static final int MAX_NUMBER_OF_ANIMALS_PER_CELL = 200;
 
 
     public Duck() {
