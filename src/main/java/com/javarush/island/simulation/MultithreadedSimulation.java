@@ -1,9 +1,6 @@
 package com.javarush.island.simulation;
 
 import com.javarush.island.animal.Animal;
-import com.javarush.island.animal.herbivore.Deer;
-import com.javarush.island.animal.herbivore.Rabbit;
-import com.javarush.island.animal.predator.Wolf;
 import com.javarush.island.config.SimulationConfig;
 import com.javarush.island.model.Island;
 import com.javarush.island.model.Location;
@@ -11,6 +8,7 @@ import com.javarush.island.model.Plant;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -25,7 +23,7 @@ public class MultithreadedSimulation {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(CORE_POOL_SIZE);
     private final ExecutorService workerPool = Executors.newFixedThreadPool(THREADS);
     private volatile boolean running = true;
-    private final double SATIETY_PER_TICK = 0.01;
+    private final double SATIETY_PER_TICK = 0.8;
 
     public MultithreadedSimulation(SimulationConfig config) {
         this.island = new Island(config.getIslandWidth(), config.getIslandHeight());
@@ -39,7 +37,8 @@ public class MultithreadedSimulation {
                 int x = ThreadLocalRandom.current().nextInt(config.getIslandWidth());
                 int y = ThreadLocalRandom.current().nextInt(config.getIslandHeight());
                 try {
-                    island.getLocation(x, y).addAnimal(entry.getKey().getConstructor().newInstance());
+                    if(!island.getLocation(x, y).addAnimal(entry.getKey().getConstructor().newInstance()))
+                        i--;
                 } catch (Exception e) {
                     log.error("Не могу создать {}", entry.getKey().getSimpleName(), e);
                     continue;
@@ -83,10 +82,11 @@ public class MultithreadedSimulation {
                         animal.move(island, finalX, finalY);
                         animal.reproduce(animal.getCurrentLocation());
                         // Уменьшаем сытость
-                        animal.setCurrentSatiety(animal.getCurrentSatiety() - SATIETY_PER_TICK);
-                        if (animal.getCurrentSatiety() <= 0) {
+                        animal.setCurrentSatiety(animal.getCurrentSatiety() * SATIETY_PER_TICK);
+                        if (animal.getCurrentSatiety() <= 0.0001) {
                             animal.die();
                             animal.getCurrentLocation().removeAnimal(animal);
+                            log.debug("{} умер от голода.",animal.getClass().getSimpleName());
                         }
                         return null;
                     });
@@ -110,29 +110,29 @@ public class MultithreadedSimulation {
     }
 
     public void printStatistics() {
-        //todo статистку по всем животным
-        int wolves = 0;
-        int rabbits = 0;
-        int deer = 0;
+        Map<Class<? extends Animal>, Integer> animalsStats = new HashMap<>();
         int plants = 0;
         for (int y = 0; y < island.getHeight(); y++) {
             for (int x = 0; x < island.getWidth(); x++) {
                 Location location = island.getLocation(x, y);
+                //Подсчет животных
                 for (Animal animal : location.getAnimals()) {
-                    if (animal instanceof Wolf) {
-                        wolves++;
-                    }
-                    else if (animal instanceof Rabbit) {
-                        rabbits++;
-                    }
-                    else if (animal instanceof Deer) {
-                        deer++;
-                    }
-                    plants += location.getPlants().size();
+                    Class<? extends Animal> animalClass = animal.getClass();
+                    animalsStats.put(animalClass, animalsStats.getOrDefault(animalClass, 0) + 1);
                 }
+                //Подсчет растений
+                plants += location.getPlants().size();
             }
         }
-        log.info("Статистика: Волки={}, Кролики={}, Олени={}, Растения={}.", wolves, rabbits, deer, plants);
+        StringBuilder stats = new StringBuilder("Статистика: ");
+        for (Map.Entry<Class<? extends Animal>, Integer> entry : animalsStats.entrySet()) {
+            stats.append(entry.getKey().getSimpleName())
+                    .append("=")
+                    .append(entry.getValue())
+                    .append(", ");
+        }
+        stats.append("Plants= ").append(plants);
+        log.info(stats.toString());
 
     }
 

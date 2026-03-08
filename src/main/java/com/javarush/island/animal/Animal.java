@@ -72,14 +72,14 @@ public abstract class Animal {
         }
 
         // Перемещение животного, если это возможно
-        if (checkAnimalsOnLocation(island.getLocation(newX, newY))) {
+        if (island.getLocation(newX, newY).addAnimal(this)) {
             island.getLocation(currentX, currentY).removeAnimal(this);
-            island.getLocation(newX, newY).addAnimal(this);
+            log.debug("{} переместился из {} в {}", this.getClass().getSimpleName(), island.getLocation(currentX, currentY), island.getLocation(newX, newY));
         }
     }
 
     public void reproduce(Location location) {
-        if (!isAlive() || getCurrentSatiety() <= 0.5 * getMaxSatiety())
+        if (!isAlive() || getCurrentSatiety() <= 0.5 * getMaxSatiety()) //todo magic number 0.5
             return;
         //Получаем кол-во особей в локации, подходящих для размножения
         long sameSpeciesCount = location.getAnimals().stream()
@@ -87,30 +87,20 @@ public abstract class Animal {
                         animal.getClass() == this.getClass()
                         && animal.isMale() != this.isMale()
                         && animal.isAlive()
-                        && animal.getCurrentSatiety() >= 0.5 * animal.getMaxSatiety())
+                        && animal.getCurrentSatiety() >= 0.5 * animal.getMaxSatiety()) //todo magic number 0.5
                 .count();
-        if (sameSpeciesCount > 0  && ThreadLocalRandom.current().nextInt(100) >= CHANCE_OF_REPRODUCTION && checkAnimalsOnLocation(location)) {
+        if (sameSpeciesCount > 0  && ThreadLocalRandom.current().nextInt(100) >= CHANCE_OF_REPRODUCTION) {
             try {
                 // Создание потомка через рефлексию (не требуется знание о конкретном классе животного во время компиляции)
                 Animal baby = this.getClass().getDeclaredConstructor().newInstance();
                 baby.setCurrentSatiety(baby.getMaxSatiety() / 2);
-                location.addAnimal(baby);
-                log.debug("Родилось животное {}", baby.getClass().getSimpleName());
+                if (location.addAnimal(baby))
+                    log.debug("Родилось животное {}", baby.getClass().getSimpleName());
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 log.error("Ошибка создания нового животного");
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    //Возвращает true, если в локации есть место для нового животного этого вида (для move() или reproduce())
-    public boolean checkAnimalsOnLocation (Location location) {
-        long count = location.getAnimals()
-                .stream()
-                .filter(animal -> this.getClass().equals(animal.getClass()))
-                .count();
-        return count < this.maxNumberOfAnimalsPerCell;
-
     }
 
     public void die() {
