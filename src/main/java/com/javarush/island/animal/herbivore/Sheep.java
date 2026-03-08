@@ -18,13 +18,4 @@ public class Sheep extends Herbivore {
         super(WEIGHT, MAX_SATIETY, SPEED, MAX_NUMBER_OF_ANIMALS_PER_CELL);
     }
 
-    @Override
-    public void move(Island island, int currentX, int currentY) {
-        //todo Пока заглушка
-    }
-
-    @Override
-    public void reproduce(Location location) {
-        //todo Пока заглушка
-    }
 }
