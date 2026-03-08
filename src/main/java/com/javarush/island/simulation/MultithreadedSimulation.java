@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
+/**
+ * Класс для создания многопоточной симуляции
+ */
+
 @Slf4j
 public class MultithreadedSimulation {
     private static final int CORE_POOL_SIZE = 1;
@@ -49,13 +53,14 @@ public class MultithreadedSimulation {
         for (int y = 0; y < island.getHeight(); y++) {
             for (int x = 0; x < island.getWidth(); x++) {
                 Location location = island.getLocation(x, y);
-                for (int p = 0; p < 5; p++) {  //todo заменить магическое число
+                for (int p = 0; p < config.getPlantsPerSell(); p++) {
                     location.addPlant(new Plant());
                 }
             }
         }
         log.info("Инициализация завершена. Животные и растения размещены.");
     }
+
 
     public void tick() {
         // 1) Рост растений

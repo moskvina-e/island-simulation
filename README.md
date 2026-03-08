@@ -31,6 +31,7 @@ com.javarush.island
  - Plant - растение
 4) simulation - логика симуляции
  - SimpleSimulation
+ - MultithreadedSimulation
 5) App - главный класс для запуска (точка входа)
 
 2. Подключение зависимостей в pom.xml

@@ -17,25 +17,28 @@ public class App {
     //private static final int SIMPLE_SIMULATION_TICKS = 10;
 
     public static void main(String[] args) {
+        int height = 5;
+        int width = 5;
+        int square = height * width;
         SimulationConfig config = SimulationConfig.builder()
-                .islandHeight(5)
-                .islandWidth(5)
+                .islandHeight(height)
+                .islandWidth(width)
                 .initialAnimals(Map.ofEntries(
-                        Map.entry(Buffalo.class, ThreadLocalRandom.current().nextInt(25, 25 * Buffalo.MAX_NUMBER_OF_ANIMALS_PER_CELL)), //todo подумать нужна ли такая автоматическая инициализация (поля нужно будет переделать на public)
-                        Map.entry(Caterpillar.class, ThreadLocalRandom.current().nextInt(25, 25 * Caterpillar.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Goat.class, ThreadLocalRandom.current().nextInt(25, 25 * Goat.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Horse.class, ThreadLocalRandom.current().nextInt(25, 25 * Horse.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Sheep.class, ThreadLocalRandom.current().nextInt(25, 25 * Sheep.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Boar.class, ThreadLocalRandom.current().nextInt(25, 25 * Boar.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Duck.class, ThreadLocalRandom.current().nextInt(25, 25 * Duck.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Mouse.class, ThreadLocalRandom.current().nextInt(25, 25 * Mouse.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Bear.class, ThreadLocalRandom.current().nextInt(25, 25 * Bear.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Boa.class, ThreadLocalRandom.current().nextInt(25, 25 * Boa.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Eagle.class, ThreadLocalRandom.current().nextInt(25, 25 * Eagle.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Fox.class, ThreadLocalRandom.current().nextInt(25, 25 * Fox.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Wolf.class, ThreadLocalRandom.current().nextInt(25, 25 * Wolf.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Rabbit.class, ThreadLocalRandom.current().nextInt(25, 25 * Rabbit.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
-                        Map.entry(Deer.class, ThreadLocalRandom.current().nextInt(25, 25 * Deer.MAX_NUMBER_OF_ANIMALS_PER_CELL))))
+                        Map.entry(Buffalo.class, ThreadLocalRandom.current().nextInt(square, square * Buffalo.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Caterpillar.class, ThreadLocalRandom.current().nextInt(square, square * Caterpillar.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Goat.class, ThreadLocalRandom.current().nextInt(square, square * Goat.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Horse.class, ThreadLocalRandom.current().nextInt(square, square * Horse.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Sheep.class, ThreadLocalRandom.current().nextInt(square, square * Sheep.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Boar.class, ThreadLocalRandom.current().nextInt(square, square * Boar.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Duck.class, ThreadLocalRandom.current().nextInt(square, square * Duck.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Mouse.class, ThreadLocalRandom.current().nextInt(square, square * Mouse.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Bear.class, ThreadLocalRandom.current().nextInt(square, square * Bear.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Boa.class, ThreadLocalRandom.current().nextInt(square, square * Boa.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Eagle.class, ThreadLocalRandom.current().nextInt(square, square * Eagle.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Fox.class, ThreadLocalRandom.current().nextInt(square, square * Fox.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Wolf.class, ThreadLocalRandom.current().nextInt(square, square * Wolf.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Rabbit.class, ThreadLocalRandom.current().nextInt(square, square * Rabbit.MAX_NUMBER_OF_ANIMALS_PER_CELL)),
+                        Map.entry(Deer.class, ThreadLocalRandom.current().nextInt(square, square * Deer.MAX_NUMBER_OF_ANIMALS_PER_CELL))))
                 .plantsPerSell(5)
                 .tickDurationMs(1000)
                 .build();

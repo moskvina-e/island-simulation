@@ -23,6 +23,7 @@ public abstract class Animal {
     protected int maxNumberOfAnimalsPerCell; // Максимальное кол-во животных одного вида на одной клетке
     protected volatile Location currentLocation; // Текущее положение животного
     private static final int CHANCE_OF_REPRODUCTION = 50; // Шанс размножения
+    private static final double SATIETY_FOR_REPRODUCTION = 0.5; // Уровень сытости для размножения
 
     // Карта вероятности поедания других животных
     protected Map<Class<? extends Animal>, Integer> eatingProbabilities;
@@ -79,7 +80,7 @@ public abstract class Animal {
     }
 
     public void reproduce(Location location) {
-        if (!isAlive() || getCurrentSatiety() <= 0.5 * getMaxSatiety()) //todo magic number 0.5
+        if (!isAlive() || getCurrentSatiety() <= SATIETY_FOR_REPRODUCTION * getMaxSatiety())
             return;
         //Получаем кол-во особей в локации, подходящих для размножения
         long sameSpeciesCount = location.getAnimals().stream()
@@ -87,13 +88,13 @@ public abstract class Animal {
                         animal.getClass() == this.getClass()
                         && animal.isMale() != this.isMale()
                         && animal.isAlive()
-                        && animal.getCurrentSatiety() >= 0.5 * animal.getMaxSatiety()) //todo magic number 0.5
+                        && animal.getCurrentSatiety() >= SATIETY_FOR_REPRODUCTION * animal.getMaxSatiety())
                 .count();
         if (sameSpeciesCount > 0  && ThreadLocalRandom.current().nextInt(100) >= CHANCE_OF_REPRODUCTION) {
             try {
                 // Создание потомка через рефлексию (не требуется знание о конкретном классе животного во время компиляции)
                 Animal baby = this.getClass().getDeclaredConstructor().newInstance();
-                baby.setCurrentSatiety(baby.getMaxSatiety() / 2);
+                baby.setCurrentSatiety(baby.getMaxSatiety() / 2); //todo magic number
                 if (location.addAnimal(baby))
                     log.debug("Родилось животное {}", baby.getClass().getSimpleName());
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

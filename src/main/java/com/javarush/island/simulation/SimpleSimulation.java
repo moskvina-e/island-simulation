@@ -16,8 +16,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Класс для создания простой однопоточной симуляции
+ * Этот класс был заменён на {@link MultithreadedSimulation} для поддержки многопоточной обработки.
+ * Новые правки в данный класс вноситься не будут.
  */
 
+@Deprecated(forRemoval = false)
 @Slf4j
 public class SimpleSimulation {
     private final Island island;
@@ -46,7 +49,7 @@ public class SimpleSimulation {
         for (int y = 0; y < island.getHeight(); y++) {
             for (int x = 0; x < island.getWidth(); x++) {
                 Location location = island.getLocation(x, y);
-                for (int p = 0; p < 5; p++) {  //todo заменить магическое число
+                for (int p = 0; p < 5; p++) {
                     location.addPlant(new Plant());
                 }
             }
@@ -88,7 +91,6 @@ public class SimpleSimulation {
     }
 
     public void printStatistics() {
-        //todo статистку по всем животным
         int wolves = 0;
         int rabbits = 0;
         int deer = 0;
@@ -118,7 +120,7 @@ public class SimpleSimulation {
         for (int i = 0; i < tiks; i++) {
             log.info("Такт {}", i + 1);
             tick();
-            Thread.sleep(1000);// todo заменить магическое число
+            Thread.sleep(1000);
         }
     }
 }
