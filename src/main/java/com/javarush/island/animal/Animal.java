@@ -14,6 +14,10 @@ import java.util.concurrent.ThreadLocalRandom;
 @NoArgsConstructor
 @Slf4j
 public abstract class Animal {
+
+    private static final int CHANCE_OF_REPRODUCTION = 50; // Шанс размножения
+    private static final double SATIETY_FOR_REPRODUCTION = 0.5; // Уровень сытости для размножения (необходимый каждому родителю и присваеваемый потомку)
+
     protected double weight;
     protected double maxSatiety; // Максимальная сытость
     protected double currentSatiety; // Текущая сытость
@@ -22,11 +26,7 @@ public abstract class Animal {
     protected int speed; // Скорость перемещения
     protected int maxNumberOfAnimalsPerCell; // Максимальное кол-во животных одного вида на одной клетке
     protected volatile Location currentLocation; // Текущее положение животного
-    private static final int CHANCE_OF_REPRODUCTION = 50; // Шанс размножения
-    private static final double SATIETY_FOR_REPRODUCTION = 0.5; // Уровень сытости для размножения
-
-    // Карта вероятности поедания других животных
-    protected Map<Class<? extends Animal>, Integer> eatingProbabilities;
+    protected Map<Class<? extends Animal>, Integer> eatingProbabilities; // Карта вероятности поедания других животных
 
     public Animal(double weight, double maxSatiety, int speed, int maxNumberOfAnimalsPerCell) {
         this.weight = weight;
@@ -94,7 +94,7 @@ public abstract class Animal {
             try {
                 // Создание потомка через рефлексию (не требуется знание о конкретном классе животного во время компиляции)
                 Animal baby = this.getClass().getDeclaredConstructor().newInstance();
-                baby.setCurrentSatiety(baby.getMaxSatiety() / 2); //todo magic number
+                baby.setCurrentSatiety(baby.getMaxSatiety() * SATIETY_FOR_REPRODUCTION);
                 if (location.addAnimal(baby))
                     log.debug("Родилось животное {}", baby.getClass().getSimpleName());
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
