@@ -45,7 +45,6 @@ public class MultithreadedSimulation {
                         i--;
                 } catch (Exception e) {
                     log.error("Не могу создать {}", entry.getKey().getSimpleName(), e);
-                    continue;
                 }
             }
         }
