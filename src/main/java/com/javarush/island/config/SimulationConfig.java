@@ -71,7 +71,7 @@ public class SimulationConfig {
     private void setDefaultValues() {
         islandWidth = 5;
         islandHeight = 5;
-        plantsPerCell = 5;
+        plantsPerCell = 1000;
         tickDurationMs = 1000;
     }
 
