@@ -2,7 +2,6 @@ package com.javarush.island.simulation;
 
 import com.javarush.island.animal.Animal;
 import com.javarush.island.animal.herbivore.*;
-import com.javarush.island.animal.omnivorous.*;
 import com.javarush.island.animal.predator.*;
 import com.javarush.island.config.SimulationConfig;
 import com.javarush.island.model.Island;
@@ -62,7 +61,7 @@ public class SimpleSimulation {
         for (int y = 0; y < island.getHeight(); y++) {
             for (int x = 0; x < island.getWidth(); x++) {
                 Location location = island.getLocation(x, y);
-                for (int p = 0; p < config.getPlantsPerSell(); p++) {
+                for (int p = 0; p < config.getPlantsPerCell(); p++) {
                     location.addPlant(new Plant());
                 }
             }
