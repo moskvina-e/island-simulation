@@ -1,0 +1,157 @@
+package com.javarush.island.simulation;
+
+import com.javarush.island.animal.Animal;
+import com.javarush.island.config.SimulationConfig;
+import com.javarush.island.model.Island;
+import com.javarush.island.model.Location;
+import com.javarush.island.model.Plant;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
+
+/**
+ * Класс для создания многопоточной симуляции
+ */
+
+@Slf4j
+public class MultithreadedSimulation {
+    private static final int CORE_POOL_SIZE = 1;
+    private static final int THREADS = 10;
+
+    private final Island island;
+    private final SimulationConfig config;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(CORE_POOL_SIZE);
+    private final ExecutorService workerPool = Executors.newFixedThreadPool(THREADS);
+    private volatile boolean running = true;
+    private final double SATIETY_PER_TICK = 0.8;
+
+    public MultithreadedSimulation(SimulationConfig config) {
+        this.island = new Island(config.getIslandWidth(), config.getIslandHeight());
+        this.config = config;
+    }
+
+    public void initialize() {
+        //Размещение всех животных по клеткам
+        for (Map.Entry<Class<? extends Animal>, Integer> entry : config.getInitialAnimals().entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                int x = ThreadLocalRandom.current().nextInt(config.getIslandWidth());
+                int y = ThreadLocalRandom.current().nextInt(config.getIslandHeight());
+                try {
+                    if(!island.getLocation(x, y).addAnimal(entry.getKey().getConstructor().newInstance()))
+                        i--;
+                } catch (Exception e) {
+                    log.error("Не могу создать {}", entry.getKey().getSimpleName(), e);
+                }
+            }
+        }
+        //Размещаем растения
+        for (int y = 0; y < island.getHeight(); y++) {
+            for (int x = 0; x < island.getWidth(); x++) {
+                Location location = island.getLocation(x, y);
+                for (int p = 0; p < config.getPlantsPerCell(); p++) {
+                    location.addPlant(new Plant());
+                }
+            }
+        }
+        log.info("Инициализация завершена. Животные и растения размещены.");
+    }
+
+
+    public void tick() {
+        // 1) Рост растений
+        for (int y = 0; y < island.getHeight(); y++) {
+            for (int x = 0; x < island.getWidth(); x++) {
+                Location location = island.getLocation(x, y);
+                for (int p = 0; p < config.getPlantsPerCell(); p++) {
+                    location.addPlant(new Plant());
+                }
+            }
+        }
+        // 2) Обработка животных (пройти по всем клеткам)
+        List<Callable<Void>> tasks = new ArrayList<>();
+        for (int y = 0; y < island.getHeight(); y++) {
+            for (int x = 0; x < island.getWidth(); x++) {
+                Location location = island.getLocation(x, y);
+                int finalX = x;
+                int finalY = y;
+                for (Animal animal : location.getAnimals()) {
+                    if (!animal.isAlive())
+                        continue;
+                    tasks.add(() -> {
+                        animal.eat(animal.getCurrentLocation());
+                        animal.move(island, finalX, finalY);
+                        animal.reproduce(animal.getCurrentLocation());
+                        // Уменьшаем сытость
+                        animal.setCurrentSatiety(animal.getCurrentSatiety() * SATIETY_PER_TICK);
+                        if (animal.getCurrentSatiety() <= 0.0001) {
+                            animal.die();
+                            animal.getCurrentLocation().removeAnimal(animal);
+                            log.debug("{} умер от голода.",animal.getClass().getSimpleName());
+                        }
+                        return null;
+                    });
+
+                }
+            }
+        }
+        try {
+            List<Future<Void>>  futures = workerPool.invokeAll(tasks);
+            for (Future<Void> f : futures) {
+                f.get();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.error("Такт прерван");
+        } catch (ExecutionException e) {
+            log.error("Ошибка при выполнении задачи животного", e.getCause());
+        }
+
+        printStatistics();
+    }
+
+    public void printStatistics() {
+        Map<Class<? extends Animal>, Integer> animalsStats = new HashMap<>();
+        int plants = 0;
+        for (int y = 0; y < island.getHeight(); y++) {
+            for (int x = 0; x < island.getWidth(); x++) {
+                Location location = island.getLocation(x, y);
+                //Подсчет животных
+                for (Animal animal : location.getAnimals()) {
+                    Class<? extends Animal> animalClass = animal.getClass();
+                    animalsStats.put(animalClass, animalsStats.getOrDefault(animalClass, 0) + 1);
+                }
+                //Подсчет растений
+                plants += location.getPlants().size();
+            }
+        }
+        StringBuilder stats = new StringBuilder("Статистика: ");
+        for (Map.Entry<Class<? extends Animal>, Integer> entry : animalsStats.entrySet()) {
+            stats.append(entry.getKey().getSimpleName())
+                    .append("=")
+                    .append(entry.getValue())
+                    .append(", ");
+        }
+        stats.append("Plants= ").append(plants);
+        log.info(stats.toString());
+
+    }
+
+    public void start() {
+        scheduler.scheduleAtFixedRate(() -> {
+            if (running) tick();
+        }, 0, config.getTickDurationMs(), TimeUnit.MILLISECONDS);
+        log.info("Симуляция запущена с тактом {} мс.",  config.getTickDurationMs());
+    }
+
+    public void stop() {
+        running = false;
+        scheduler.shutdown();
+        workerPool.shutdown();
+        log.info("Симуляция остановлена.");
+    }
+
+}
